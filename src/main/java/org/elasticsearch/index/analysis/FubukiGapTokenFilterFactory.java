@@ -21,6 +21,6 @@ public class FubukiGapTokenFilterFactory extends AbstractTokenFilterFactory{
 
     @Override
     public TokenStream create(TokenStream tokenStream) {
-        return new EmptyTokenStream();
+        return new FubukiGapTokenFilter(tokenStream);
     }
 }
