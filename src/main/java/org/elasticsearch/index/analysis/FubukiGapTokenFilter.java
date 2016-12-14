@@ -30,21 +30,25 @@ public class FubukiGapTokenFilter extends TokenFilter{
     @Override
     public final boolean incrementToken() throws IOException {
 
-        if (!input.incrementToken()) {
-            return false;
+        int gap = 0;
+        while (input.incrementToken()) {
+            String str = termAttribute.toString();
+
+
+            if (str.equalsIgnoreCase("test") || str.equalsIgnoreCase("\n")) {
+                gap += 1;
+                //positionLengthAttribute.setPositionLength(29);
+            } else {
+                if (gap > 0) {
+                    posIncAttribute.setPositionIncrement(100 * gap);
+                    gap = 0;
+                }
+
+                return true;
+            }
+
         }
-
-        String str = termAttribute.toString();
-
-        final int posIncrement = posIncAttribute.getPositionIncrement();
-
-        if (str.equalsIgnoreCase("test")) {
-            posIncAttribute.setPositionIncrement(100);
-            //positionLengthAttribute.setPositionLength(29);
-            return true;
-        }
-
-        return true;
+        return false;
     }
 
     @Override
